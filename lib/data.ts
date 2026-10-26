@@ -1,4 +1,4 @@
-// Contenido de ejemplo de "Restaurante Ejemplo".
+// Contenido de la demo de "La Plancha 70".
 // Todos los datos (dirección, teléfonos, precios, reseñas) son ficticios y deben confirmarse antes de publicar.
 
 export type Category = "hamburguesas" | "acompanamientos" | "bebidas" | "postres";
@@ -22,17 +22,17 @@ export type MenuItem = {
 
 export const MENU: MenuItem[] = [
   {
-    id: "la-ejemplo",
-    name: "La Ejemplo",
+    id: "la-clasica",
+    name: "La Clásica",
     desc: "150 g de res, cheddar, lechuga, tomate, cebolla roja y salsa de la casa en pan brioche.",
     price: 21900,
     category: "hamburguesas",
-    image: "/images/burger-clasica-ejemplo.jpg",
+    image: "/images/burger-la-clasica.jpg",
   },
   {
-    id: "doble-ejemplo",
-    name: "La Doble Ejemplo",
-    desc: "Dos smash de 110 g, doble cheddar, pepinillos, cebolla a la plancha y salsa Ejemplo.",
+    id: "doble-70",
+    name: "La Doble 70",
+    desc: "Dos smash de 110 g, doble cheddar, pepinillos, cebolla a la plancha y Salsa 70.",
     price: 28900,
     category: "hamburguesas",
     image: "/images/hero-burger-estrella-smash-doble.jpg",
@@ -124,7 +124,7 @@ export const MENU: MenuItem[] = [
   {
     id: "papas-familiares",
     name: "Papas familiares",
-    desc: "Bandeja para cuatro con tres salsas: Ejemplo, BBQ de panela y ajo asado.",
+    desc: "Bandeja para cuatro con tres salsas: Salsa 70, BBQ de panela y ajo asado.",
     price: 18900,
     category: "acompanamientos",
     image: "/images/papas-familiares-bandeja.jpg",
@@ -236,7 +236,7 @@ export const COMBOS: Combo[] = [
     id: "combo-pareja",
     name: "Combo Pareja",
     line: "Dos que se entienden",
-    includes: ["2 La Ejemplo", "Papas a mano", "2 limonadas de coco"],
+    includes: ["2 La Clásica", "Papas a mano", "2 limonadas de coco"],
     price: 49900,
     before: 72500,
     image: "/images/combo-pareja-papas-burger.jpg",
@@ -245,14 +245,14 @@ export const COMBOS: Combo[] = [
     id: "combo-mesa-llena",
     name: "La Mesa Llena",
     line: "Para la familia entera",
-    includes: ["4 La Ejemplo o Pollo Crispy", "2 papas familiares", "4 gaseosas", "1 brownie en vaso"],
+    includes: ["4 La Clásica o Pollo Crispy", "2 papas familiares", "4 gaseosas", "1 brownie en vaso"],
     price: 109900,
     before: 160300,
     image: "/images/combo-familiar-mesa.jpg",
   },
   {
     id: "combo-mini",
-    name: "Mini Ejemplo",
+    name: "Mini 70",
     line: "Para los de 12 y menos",
     includes: ["Mini burger de 90 g", "Papas pequeñas", "Malteada mini", "Calcomanía de regalo"],
     price: 22900,
@@ -261,8 +261,8 @@ export const COMBOS: Combo[] = [
   {
     id: "martes-doble",
     name: "Martes de Doble",
-    line: "2×1 en La Doble Ejemplo",
-    includes: ["2 La Doble Ejemplo", "Solo martes, todo el día", "En el local y a domicilio"],
+    line: "2×1 en La Doble 70",
+    includes: ["2 La Doble 70", "Solo martes, todo el día", "En el local y a domicilio"],
     price: 28900,
     before: 57800,
     image: "/images/combo-burger-papas.jpg",
@@ -278,12 +278,12 @@ export type Review = {
 };
 
 export const REVIEWS: Review[] = [
-  { name: "Juan Pablo M.", where: "Estadio", text: "La Doble Ejemplo es otra cosa. El borde de la carne queda crocante, como en las fotos.", stars: 5 },
+  { name: "Juan Pablo M.", where: "Estadio", text: "La Doble 70 es otra cosa. El borde de la carne queda crocante, como en las fotos.", stars: 5 },
   { name: "Mariana G.", where: "Belén", text: "Pedí a domicilio un viernes a las 9 y llegó en 28 minutos, las papas todavía crujían.", stars: 5 },
   { name: "Andrés F.", where: "Laureles", text: "La Paisa con chicharrón no debería funcionar y funciona demasiado bien.", stars: 5 },
   { name: "Sara L.", where: "Envigado", text: "La malteada Monstruo es para dos. Yo no la compartí.", stars: 5 },
   { name: "Camilo R.", where: "La América", text: "Buen precio para lo que es. El combo Pareja nos salvó la cita.", stars: 4 },
-  { name: "Daniela P.", where: "Conquistadores", text: "Fuimos con los niños, el Mini Ejemplo trae calcomanía y ya quieren volver.", stars: 5 },
+  { name: "Daniela P.", where: "Conquistadores", text: "Fuimos con los niños, el Mini 70 trae calcomanía y ya quieren volver.", stars: 5 },
   { name: "Felipe O.", where: "Robledo", text: "Atienden rápido aunque esté lleno. El alioli de limón es adictivo.", stars: 5 },
   { name: "Luisa C.", where: "Floresta", text: "Las papas parmesano valen el viaje solas. Pidan extra salsa de ajo.", stars: 4 },
   { name: "Tomás V.", where: "Simón Bolívar", text: "Martes de Doble es la mejor tradición de la semana en la oficina.", stars: 5 },
@@ -293,8 +293,8 @@ export const REVIEWS: Review[] = [
 export const LETTER = {
   opening: "Llegamos con tres niños con hambre y salimos con tres fans.",
   body: [
-    "Era sábado, el local estaba lleno y aun así en doce minutos teníamos todo en la mesa. Mi hijo menor pidió el Mini Ejemplo y se pasó la tarde mostrándole la calcomanía a todo el mundo.",
-    "Yo me pedí La Doble Ejemplo pensando que era mucho. No era mucho. Las papas a mano saben a papa de verdad, y la malteada de fresa tiene fruta, se nota.",
+    "Era sábado, el local estaba lleno y aun así en doce minutos teníamos todo en la mesa. Mi hijo menor pidió el Mini 70 y se pasó la tarde mostrándole la calcomanía a todo el mundo.",
+    "Yo me pedí La Doble 70 pensando que era mucho. No era mucho. Las papas a mano saben a papa de verdad, y la malteada de fresa tiene fruta, se nota.",
     "Ya es nuestro plan fijo de fin de mes. Gracias por tratar a los niños como clientes importantes.",
   ],
   name: "Valentina Restrepo",
@@ -302,20 +302,23 @@ export const LETTER = {
 };
 
 export const INFO = {
-  name: "Restaurante Ejemplo",
+  name: "La Plancha 70",
   street: "Cra. 70 #44-21",
   area: "Laureles, Medellín",
-  phoneDisplay: "(604) 444 1234",
-  phoneHref: "tel:+576044441234",
-  whatsapp: "573001234567",
-  whatsappDisplay: "+57 300 123 4567",
-  email: "hola@restauranteejemplo.co",
-  instagram: "https://instagram.com/restauranteejemplo",
-  tiktok: "https://www.tiktok.com/@restauranteejemplo",
-  facebook: "https://facebook.com/restauranteejemplo",
+  // Reemplazar TU_NUMERO por el número de WhatsApp con indicativo, sin "+" ni espacios (ej. 573001112233).
+  whatsapp: "TU_NUMERO",
   mapsQuery: "Carrera 70 #44-21, Laureles, Medellín, Antioquia",
   since: 2016,
 };
+
+// Mensaje prellenado de los botones generales de WhatsApp y de la franja de demo.
+export const DEMO_MESSAGE = "Hola David, vi tu demo del restaurante y me interesa una web así para mi negocio.";
+// Primera línea del mensaje que arma el carrito.
+export const CART_INTRO = "Hola David, probé el carrito de tu demo del restaurante:";
+
+export function whatsappLink(message: string) {
+  return `https://wa.me/${INFO.whatsapp}?text=${encodeURIComponent(message)}`;
+}
 
 export type Hours = { label: string; days: number[]; open: string; close: string };
 
@@ -330,7 +333,7 @@ export const STATS = [
   { value: 100, suffix: "%", decimals: 0, title: "Carne fresca", text: "Res molida cada mañana a las 6:00 a. m. En nuestra cocina no hay congelador de carne." },
   { value: 12, suffix: " min", decimals: 0, title: "Hasta tu mesa", text: "Tiempo promedio entre tu pedido en caja y el primer mordisco." },
   { value: 35, suffix: " min", decimals: 0, title: "A tu puerta", text: "Domicilio promedio en Laureles, Estadio, Conquistadores y La 70." },
-  { value: 4.8, suffix: "", decimals: 1, title: "En Google", text: "Calificación promedio en más de 2.300 reseñas desde 2016." },
+  { value: 4.8, suffix: "", decimals: 1, title: "Calificación", text: "Calificación de ejemplo para la demo." },
 ];
 
 export function formatCOP(n: number) {

@@ -3,15 +3,12 @@
 import Image from "next/image";
 import { useRef } from "react";
 import { gsap, useGSAP, MQ } from "@/lib/gsap";
-import { INFO } from "@/lib/data";
+import { DEMO_MESSAGE, INFO, whatsappLink } from "@/lib/data";
 import Magnetic from "./Magnetic";
 import Edge from "./Edge";
 
-const SOCIALS = [
-  { label: "Instagram", href: INFO.instagram, handle: "@restauranteejemplo" },
-  { label: "TikTok", href: INFO.tiktok, handle: "@restauranteejemplo" },
-  { label: "Facebook", href: INFO.facebook, handle: "/restauranteejemplo" },
-];
+// Redes de muestra: no apuntan a ninguna cuenta real.
+const SOCIALS = ["Instagram", "TikTok", "Facebook"];
 
 // El reverso de la tarjeta: festón arriba, mensaje a la izquierda, datos a la derecha, estampilla y la marca a todo lo ancho.
 export default function Footer() {
@@ -47,7 +44,7 @@ export default function Footer() {
     { scope: root },
   );
 
-  const wa = `https://wa.me/${INFO.whatsapp}?text=${encodeURIComponent("¡Hola, Restaurante Ejemplo! Quiero hacer un pedido.")}`;
+  const wa = whatsappLink(DEMO_MESSAGE);
 
   return (
     <footer ref={root} className="relative overflow-hidden bg-char pt-[120px] text-char lg:pt-[160px]">
@@ -61,18 +58,17 @@ export default function Footer() {
                 Si vienes en grupo de más de diez, escríbenos antes y juntamos mesas. Si es cumpleaños, la malteada de la vela corre por nuestra cuenta.
               </p>
               <ul className="mt-8 flex flex-wrap gap-3">
-                {SOCIALS.map((s) => (
-                  <li key={s.label}>
+                {SOCIALS.map((label) => (
+                  <li key={label}>
                     <Magnetic strength={0.45}>
                       <a
-                        href={s.href}
-                        target="_blank"
-                        rel="noopener noreferrer"
+                        href="#"
+                        onClick={(e) => e.preventDefault()}
                         className="inline-flex items-center rounded-full bg-char px-6 py-3 font-display text-xl uppercase text-mustard"
                         data-cursor="button"
-                        aria-label={`${s.label} ${s.handle}`}
+                        aria-label={`${label} (enlace de muestra, sin cuenta real)`}
                       >
-                        <span data-magnetic-inner>{s.label}</span>
+                        <span data-magnetic-inner>{label}</span>
                       </a>
                     </Magnetic>
                   </li>
@@ -82,23 +78,13 @@ export default function Footer() {
 
             <div className="relative lg:pt-24">
               <figure className="foot-stamp absolute right-0 top-[-2.5rem] w-[72px] rotate-6 bg-mustard p-1.5 sm:w-[88px] lg:top-0">
-                <Image src="/images/burger-clasica-ejemplo.jpg" alt="" width={176} height={234} sizes="88px" className="block aspect-[3/4] w-full object-cover" />
+                <Image src="/images/burger-la-clasica.jpg" alt="" width={176} height={234} sizes="88px" className="block aspect-[3/4] w-full object-cover" />
               </figure>
               <address className="not-italic">
                 <ul className="space-y-3 text-[1.125rem] leading-[1.4]">
                   <li>
-                    <a className="link-underline" href={INFO.phoneHref} data-cursor="button">
-                      Teléfono {INFO.phoneDisplay}
-                    </a>
-                  </li>
-                  <li>
                     <a className="link-underline" href={wa} target="_blank" rel="noopener noreferrer" data-cursor="button">
-                      WhatsApp {INFO.whatsappDisplay}
-                    </a>
-                  </li>
-                  <li>
-                    <a className="link-underline" href={`mailto:${INFO.email}`} data-cursor="button">
-                      {INFO.email}
+                      Escríbenos por WhatsApp
                     </a>
                   </li>
                   <li>
@@ -111,14 +97,14 @@ export default function Footer() {
             </div>
           </div>
           <p className="mt-14 text-center text-[0.8125rem] leading-[1.5]">
-            © 2026 {INFO.name}. Sitio de ejemplo con datos ficticios. Fotografías de Unsplash usadas como referencia temporal.
+            © 2026 {INFO.name}. Sitio de demostración con datos ficticios. Fotografías de Unsplash usadas como referencia temporal.
           </p>
         </div>
       </div>
 
       <div className="foot-word-wrap mt-16 overflow-hidden lg:mt-24" aria-hidden="true">
-        <p className="foot-word whitespace-nowrap text-center font-display uppercase leading-[0.78] tracking-[-0.03em] text-mustard text-[27.5vw]">
-          Ejemplo
+        <p className="foot-word whitespace-nowrap text-center font-display uppercase leading-[0.78] tracking-[-0.03em] text-mustard text-[19vw]">
+          Plancha 70
         </p>
       </div>
     </footer>

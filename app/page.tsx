@@ -2,6 +2,7 @@ import { OrderProvider } from "@/components/OrderProvider";
 import Loader from "@/components/Loader";
 import Cursor from "@/components/Cursor";
 import StickyNav from "@/components/StickyNav";
+import DemoBar from "@/components/DemoBar";
 import Hero from "@/components/Hero";
 import TapeBand from "@/components/TapeBand";
 import Menu from "@/components/Menu";
@@ -18,6 +19,7 @@ export default function Home() {
     <OrderProvider>
       <Loader />
       <Cursor />
+      <DemoBar />
       <StickyNav />
       <main>
         <Hero />

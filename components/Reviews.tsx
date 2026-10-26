@@ -77,10 +77,15 @@ export default function Reviews() {
   return (
     <section ref={root} id="opiniones" className="relative overflow-hidden bg-ketchup pb-[120px] pt-[120px] text-paper lg:pb-[180px] lg:pt-[180px]">
       <div className="grid grid-cols-1 gap-x-8 px-[var(--gutter)] lg:grid-cols-12">
-        <h2 className="rev-title font-display uppercase leading-[0.82] tracking-[-0.02em] text-[clamp(3.6rem,9vw,9.5rem)] lg:col-span-5">
-          <span className="rev-title-line block">Lo dicen</span>
-          <span className="rev-title-line block">ellos</span>
-        </h2>
+        <div className="lg:col-span-5">
+          <h2 className="rev-title font-display uppercase leading-[0.82] tracking-[-0.02em] text-[clamp(3.6rem,9vw,9.5rem)]">
+            <span className="rev-title-line block">Lo dicen</span>
+            <span className="rev-title-line block">ellos</span>
+          </h2>
+          <p className="mt-6 inline-block -rotate-2 bg-paper px-3 py-1.5 text-base font-semibold leading-tight text-char">
+            Reseñas de ejemplo para la demo
+          </p>
+        </div>
 
         <article className="napkin relative mt-12 bg-paper px-6 py-10 text-char sm:px-12 sm:py-14 lg:col-span-6 lg:col-start-7 lg:mt-24 lg:-rotate-2">
           <Edge shape="scallop" side="top" size={10} color="var(--color-paper)" />
@@ -100,7 +105,7 @@ export default function Reviews() {
           </div>
           <div className="absolute -right-3 -top-6 rotate-6 bg-mustard px-4 py-2 font-display text-xl uppercase text-char sm:-right-8">
             <Stars value={5} className="mr-2 align-[-2px]" />
-            Reseña en Google
+            Reseña de muestra
           </div>
         </article>
       </div>

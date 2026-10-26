@@ -65,7 +65,7 @@ export default function Location() {
   const directions = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(INFO.mapsQuery)}`;
 
   return (
-    <section ref={root} id="ubicacion" className="relative bg-char text-char">
+    <section ref={root} id="ubicacion" className="relative overflow-x-clip bg-char text-char">
       <h2 className="sr-only">Ubicación y horarios</h2>
       <div className="map-frame relative h-[70svh] overflow-hidden md:h-[100svh] md:min-h-[720px]">
         <iframe
@@ -115,11 +115,6 @@ export default function Location() {
           </dl>
 
           <p className="visit-row mt-5 text-base">
-            Teléfono{" "}
-            <a href={INFO.phoneHref} className="link-underline font-semibold tabular-nums" data-cursor="button">
-              {INFO.phoneDisplay}
-            </a>
-            <br />
             Domicilios a 4 km a la redonda, de 12:00 m. a 10:00 p. m.
           </p>
 

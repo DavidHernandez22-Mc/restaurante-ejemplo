@@ -1,6 +1,6 @@
 import { useId } from "react";
 
-// Ilustración plana de La Doble Ejemplo. Cada capa vive en dos grupos:
+// Ilustración plana de La Doble 70. Cada capa vive en dos grupos:
 // .b-explode (lo mueve el scroll) y .b-layer (lo mueve el armado inicial).
 
 const SESAME: [number, number, number][] = [
@@ -24,7 +24,7 @@ function lettucePath() {
 export function BurgerArt({ className = "" }: { className?: string }) {
   const lettuce = lettucePath();
   return (
-    <svg viewBox="0 0 420 400" className={className} role="img" aria-label="Ilustración de La Doble Ejemplo armándose capa por capa">
+    <svg viewBox="0 0 420 400" className={className} role="img" aria-label="Ilustración de La Doble 70 armándose capa por capa">
       <g className="b-explode" data-explode="0">
         <g className="b-layer" data-layer="bun-bottom">
           <path d="M44 330 H376 Q392 330 388 348 Q380 382 338 384 H82 Q40 382 32 348 Q28 330 44 330 Z" fill="#E8A13A" />

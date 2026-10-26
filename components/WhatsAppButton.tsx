@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { gsap, MQ } from "@/lib/gsap";
-import { INFO } from "@/lib/data";
+import { DEMO_MESSAGE, whatsappLink } from "@/lib/data";
 
 export default function WhatsAppButton() {
   const ring = useRef<HTMLSpanElement>(null);
@@ -17,7 +17,7 @@ export default function WhatsAppButton() {
     return () => ctx.revert();
   }, []);
 
-  const href = `https://wa.me/${INFO.whatsapp}?text=${encodeURIComponent("¡Hola, Restaurante Ejemplo! Tengo una pregunta.")}`;
+  const href = whatsappLink(DEMO_MESSAGE);
 
   return (
     <a
@@ -25,7 +25,7 @@ export default function WhatsAppButton() {
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      aria-label={`Escríbenos por WhatsApp al ${INFO.whatsappDisplay}`}
+      aria-label="Escribir por WhatsApp"
       className="fixed bottom-4 right-4 z-[70] grid size-16 place-items-center rounded-full bg-wa text-char sm:bottom-6 sm:right-6"
       data-cursor="button"
     >

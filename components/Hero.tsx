@@ -145,7 +145,7 @@ export default function Hero() {
     <section
       ref={root}
       id="inicio"
-      className="hero relative isolate flex min-h-[100svh] flex-col overflow-hidden bg-ketchup text-paper lg:block lg:h-[100svh] lg:min-h-[760px]"
+      className="hero relative isolate flex min-h-[calc(100svh-var(--demo-h))] flex-col overflow-hidden bg-ketchup text-paper lg:block lg:h-[calc(100svh-var(--demo-h))] lg:min-h-[720px]"
     >
       {/* Ingredientes flotantes */}
       <div className="pointer-events-none absolute inset-0 z-10" aria-hidden="true">
@@ -165,19 +165,18 @@ export default function Hero() {
           <li><a className="link-underline" href="#combos" data-cursor="button">Combos</a></li>
           <li><a className="link-underline" href="#ubicacion" data-cursor="button">Dónde estamos</a></li>
         </ul>
-        <a href="#inicio" className="col-start-2 text-center font-display uppercase leading-[0.85]" aria-label="Restaurante Ejemplo, inicio">
-          <span className="block text-[0.95rem] tracking-[0.02em]">Restaurante</span>
-          <span className="block text-[1.9rem] lg:text-[2.2rem]">Ejemplo</span>
+        <a href="#inicio" className="col-start-2 text-center font-display uppercase leading-[0.85]" aria-label="La Plancha 70, inicio">
+          <span className="block text-[0.95rem] tracking-[0.02em]">La Plancha</span>
+          <span className="block text-[1.9rem] lg:text-[2.2rem]">70</span>
         </a>
-        <a href={INFO.phoneHref} className="link-underline justify-self-end text-[0.95rem] font-medium tabular-nums" data-cursor="button">
-          <span className="hidden sm:inline">Llama al </span>
-          {INFO.phoneDisplay}
+        <a href="#ubicacion" className="link-underline justify-self-end text-[0.95rem] font-medium" data-cursor="button">
+          <span className="hidden sm:inline">{INFO.street} · </span>Laureles
         </a>
       </nav>
 
       {/* Titular */}
       <h1 className="hero-title relative z-30 mt-6 px-[var(--gutter)] font-display uppercase leading-[0.9] tracking-[-0.02em] text-[clamp(5.2rem,21vw,9rem)] lg:absolute lg:leading-[0.8] lg:left-0 lg:top-[13svh] lg:mt-0 lg:text-[clamp(7rem,16.5vw,17.5rem)]">
-        <span className="sr-only">Restaurante Ejemplo, hamburguesas en Medellín: </span>
+        <span className="sr-only">La Plancha 70, hamburguesas en Medellín: </span>
         <span className="hero-line hero-line-1 block">Muerde</span>
         <span className="hero-line hero-line-2 block pl-[8vw]">sin miedo</span>
       </h1>
@@ -196,7 +195,7 @@ export default function Hero() {
           <span className="tape absolute -top-3 left-1/2 h-6 w-20 -translate-x-1/2 rotate-3 bg-mustard/90" aria-hidden="true" />
           <Image
             src="/images/hero-burger-estrella-smash-doble.jpg"
-            alt="La Doble Ejemplo servida: dos carnes smash con cheddar fundido y pepinillos"
+            alt="La Doble 70 servida: dos carnes smash con cheddar fundido y pepinillos"
             width={400}
             height={500}
             priority

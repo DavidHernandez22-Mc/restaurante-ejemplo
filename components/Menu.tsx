@@ -53,7 +53,7 @@ export default function Menu() {
 
     // Si ya bajaste dentro de la carta, se vuelve al inicio de la hoja: al cambiar de
     // categoría la hoja cambia mucho de alto y, sin esto, quedarías mirando otra sección.
-    const offset = window.innerWidth >= 1024 ? 110 : 150;
+    const offset = (window.innerWidth >= 1024 ? 110 : 150) + 40;
     const top = sheet.getBoundingClientRect().top;
     if (top < offset) window.scrollTo({ top: window.scrollY + top - offset, behavior: "instant" });
 
@@ -139,13 +139,13 @@ export default function Menu() {
   };
 
   return (
-    <section ref={root} id="menu" className="relative overflow-hidden bg-mustard pb-[120px] pt-[150px] text-char lg:pb-[180px] lg:pt-[200px]">
+    <section ref={root} id="menu" className="relative overflow-x-clip bg-mustard pb-[120px] pt-[150px] text-char lg:pb-[180px] lg:pt-[200px]">
       <h2 className="menu-title whitespace-nowrap px-[var(--gutter)] font-display uppercase leading-[0.8] tracking-[-0.03em] text-[clamp(6rem,30vw,26rem)]">
         La carta
       </h2>
 
       <div className="mt-10 grid grid-cols-1 gap-x-8 px-[var(--gutter)] lg:mt-14 lg:grid-cols-12">
-        <aside className="contents lg:sticky lg:top-24 lg:col-span-4 lg:block lg:self-start">
+        <aside className="contents lg:sticky lg:top-[calc(6rem+var(--demo-h))] lg:col-span-4 lg:block lg:self-start">
           <p className="max-w-[34ch] text-[clamp(1.125rem,1rem+0.4vw,1.375rem)] font-medium leading-[1.45]">
             Toca un plato para sumarlo a tu pedido. Al final lo mandas por WhatsApp y te lo tenemos listo.
           </p>
@@ -153,7 +153,7 @@ export default function Menu() {
           <div
             role="group"
             aria-label="Filtrar la carta por categoría"
-            className="menu-filters sticky top-[64px] z-30 -mx-[var(--gutter)] mt-6 flex gap-2 overflow-x-auto bg-mustard px-[var(--gutter)] py-3 [scrollbar-width:none] lg:static lg:mx-0 lg:flex-wrap lg:gap-2.5 lg:overflow-visible lg:bg-transparent lg:px-0"
+            className="menu-filters sticky top-[calc(64px+var(--demo-h))] z-30 -mx-[var(--gutter)] mt-6 flex gap-2 overflow-x-auto bg-mustard px-[var(--gutter)] py-3 [scrollbar-width:none] lg:static lg:mx-0 lg:flex-wrap lg:gap-2.5 lg:overflow-visible lg:bg-transparent lg:px-0"
           >
             {FILTERS.map((f, i) => (
               <button

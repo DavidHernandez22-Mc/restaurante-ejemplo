@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { gsap, MQ } from "@/lib/gsap";
-import { INFO, ORDERABLES, formatCOP } from "@/lib/data";
+import { CART_INTRO, INFO, ORDERABLES, formatCOP, whatsappLink } from "@/lib/data";
 import { useOrder } from "./OrderProvider";
 import Edge from "./Edge";
 
@@ -52,14 +52,14 @@ export default function OrderTicket() {
 
   const entries = Object.entries(lines).filter(([id]) => ORDERABLES[id]);
   const message = [
-    "¡Hola, Restaurante Ejemplo! Quiero pedir:",
+    CART_INTRO,
     ...entries.map(([id, qty]) => `${qty} × ${ORDERABLES[id].name} (${formatCOP(ORDERABLES[id].price * qty)})`),
     `Total: ${formatCOP(total)}`,
     "",
     "Nombre:",
     "Dirección o recojo en el local:",
   ].join("\n");
-  const waHref = `https://wa.me/${INFO.whatsapp}?text=${encodeURIComponent(message)}`;
+  const waHref = whatsappLink(message);
 
   return (
     <>

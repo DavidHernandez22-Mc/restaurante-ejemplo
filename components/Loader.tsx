@@ -57,7 +57,7 @@ export default function Loader() {
   if (gone) return null;
 
   return (
-    <div ref={root} className="loader fixed inset-0 z-[100] overflow-hidden" role="status" aria-label="Cargando Restaurante Ejemplo">
+    <div ref={root} className="loader fixed inset-0 z-[100] overflow-hidden" role="status" aria-label="Cargando La Plancha 70">
       <div className="absolute inset-0 grid grid-cols-3">
         {[0, 1, 2].map((i) => (
           <div key={i} className="ld-panel relative bg-mustard">
@@ -69,10 +69,10 @@ export default function Loader() {
         <div className="relative">
           <p className="font-display uppercase leading-[0.82] tracking-[-0.02em] text-center text-[clamp(3rem,15vw,13rem)]">
             <span className="block overflow-hidden">
-              <span className="ld-word inline-block bg-mustard px-[0.08em]">Restaurante</span>
+              <span className="ld-word inline-block bg-mustard px-[0.08em]">La Plancha</span>
             </span>
             <span className="block overflow-hidden">
-              <span className="ld-word inline-block bg-ketchup px-[0.08em] text-paper">Ejemplo</span>
+              <span className="ld-word inline-block bg-ketchup px-[0.08em] text-paper">70</span>
             </span>
           </p>
           <span className="ld-stamp absolute -right-2 -top-12 grid size-20 place-items-center rounded-full bg-char text-center font-display text-base leading-none text-mustard md:-right-10 md:-top-8 md:size-32 md:text-2xl">

@@ -12,7 +12,7 @@ export default function StickyNav() {
     gsap.set(bar.current, { yPercent: -110 });
     const st = ScrollTrigger.create({
       trigger: "#inicio",
-      start: "bottom 80px",
+      start: "bottom 120px",
       onEnter: () => gsap.to(bar.current, { yPercent: 0, duration: reduced ? 0 : 0.5, ease: "power3.out" }),
       onLeaveBack: () => gsap.to(bar.current, { yPercent: -110, duration: reduced ? 0 : 0.35, ease: "power3.in" }),
     });
@@ -28,10 +28,10 @@ export default function StickyNav() {
   });
 
   return (
-    <header ref={bar} className="fixed inset-x-0 top-0 z-[60] bg-char text-paper">
+    <header ref={bar} className="fixed inset-x-0 top-[var(--demo-h)] z-[60] bg-char text-paper">
       <div className="flex h-16 items-center justify-between gap-4 px-[var(--gutter)]">
         <a href="#inicio" className="whitespace-nowrap font-display text-2xl uppercase leading-none" data-cursor="button">
-          Restaurante <span className="text-mustard">Ejemplo</span>
+          La Plancha <span className="text-mustard">70</span>
         </a>
         <nav aria-label="Atajos" className="hidden lg:block">
           <ul className="flex gap-6 whitespace-nowrap text-[0.95rem] font-medium">
