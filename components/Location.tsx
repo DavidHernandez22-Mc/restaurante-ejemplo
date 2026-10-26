@@ -1,8 +1,30 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import type * as Leaflet from "leaflet";
 import { gsap, useGSAP, MQ } from "@/lib/gsap";
 import { HOURS, INFO, formatHour } from "@/lib/data";
+import { loadLeaflet } from "@/lib/leaflet";
+
+// Cruce de la Carrera 70 con la Avenida San Juan (Calle 44), Laureles, Medellín.
+// Calculado con la geometría de ambas vías en Nominatim (OpenStreetMap).
+const COORDS: [number, number] = [6.249181, -75.588787];
+
+// Teselas claras de Esri (Light Gray Canvas): fondo sin negocios marcados y una capa aparte
+// solo con nombres de calles y barrios. CARTO ya exige clave y muestra una marca de agua.
+const ESRI = "https://server.arcgisonline.com/ArcGIS/rest/services/Canvas";
+const TILES_BASE = `${ESRI}/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}`;
+const TILES_LABELS = `${ESRI}/World_Light_Gray_Reference/MapServer/tile/{z}/{y}/{x}`;
+const ATTRIBUTION =
+  'Teselas &copy; <a href="https://www.esri.com/">Esri</a> · Datos &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>, HERE, Garmin';
+
+// Pin propio: círculo mostaza con borde carbón y una hamburguesa.
+const PIN_HTML = `<span class="plancha-pin-dot"><svg viewBox="0 0 32 32" width="30" height="30" aria-hidden="true">
+<path d="M5 14c0-5.5 5-9 11-9s11 3.5 11 9z" fill="#1b110c"/>
+<rect x="4" y="16" width="24" height="4" rx="2" fill="#d91f16"/>
+<rect x="5" y="21" width="22" height="3" rx="1.5" fill="#1b110c"/>
+<path d="M5 25h22c0 1.7-1.3 3-3 3H8c-1.7 0-3-1.3-3-3z" fill="#1b110c"/>
+</svg></span>`;
 
 type Status = { open: boolean; text: string } | null;
 
@@ -32,7 +54,55 @@ function computeStatus(): Status {
 
 export default function Location() {
   const root = useRef<HTMLElement>(null);
+  const mapEl = useRef<HTMLDivElement>(null);
   const [status, setStatus] = useState<Status>(null);
+  const [mapFailed, setMapFailed] = useState(false);
+
+  // El mapa (y Leaflet) se carga solo cuando la sección se acerca a la pantalla.
+  useEffect(() => {
+    const el = mapEl.current;
+    if (!el) return;
+    let map: Leaflet.Map | null = null;
+    let cancelled = false;
+
+    const init = (L: typeof Leaflet) => {
+      if (cancelled) return;
+      const touch = window.matchMedia("(pointer: coarse)").matches;
+      map = L.map(el, {
+        center: COORDS,
+        zoom: 16,
+        maxZoom: 16,
+        // La rueda del mouse sigue bajando la página; en celular un dedo hace scroll, no arrastra el mapa.
+        scrollWheelZoom: false,
+        dragging: !touch,
+        zoomControl: true,
+      });
+      L.tileLayer(TILES_BASE, { maxZoom: 16, attribution: ATTRIBUTION }).addTo(map);
+      L.tileLayer(TILES_LABELS, { maxZoom: 16 }).addTo(map);
+      const icon = L.divIcon({ className: "plancha-pin", html: PIN_HTML, iconSize: [60, 60], iconAnchor: [30, 30], popupAnchor: [0, -32] });
+      L.marker(COORDS, { icon, title: "La Plancha 70", alt: "La Plancha 70" })
+        .addTo(map)
+        .bindPopup("<strong>La Plancha 70</strong> · Cra. 70 #44-21", { closeButton: false, autoPan: false, className: "plancha-popup" })
+        .openPopup();
+    };
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (!entries[0].isIntersecting) return;
+        io.disconnect();
+        loadLeaflet()
+          .then(init)
+          .catch(() => !cancelled && setMapFailed(true));
+      },
+      { rootMargin: "800px 0px" },
+    );
+    io.observe(el);
+    return () => {
+      cancelled = true;
+      io.disconnect();
+      map?.remove();
+    };
+  }, []);
 
   useEffect(() => {
     const update = () => setStatus(computeStatus());
@@ -50,9 +120,13 @@ export default function Location() {
         const tl = gsap.timeline({ scrollTrigger: { trigger: ".map-frame", start: "top 75%", once: true } });
         tl.to(".map-door-l", { xPercent: -100, duration: 1.1, ease: "expo.inOut" })
           .to(".map-door-r", { xPercent: 100, duration: 1.1, ease: "expo.inOut" }, 0)
-          // La tarjeta se estampa encima.
-          .from(".visit-card", { scale: 1.5, rotate: 14, opacity: 0, duration: 0.5, ease: "power4.in" }, 0.55)
-          .fromTo(".visit-card", { y: -6 }, { y: 0, duration: 0.4, ease: "elastic.out(1.5, 0.3)" }, ">")
+          // La tarjeta se estampa encima: entra grande y girada y rebota al asentarse.
+          .fromTo(
+            ".visit-card",
+            { scale: 1.5, rotate: 14, opacity: 0 },
+            { scale: 1, rotate: 0, opacity: 1, duration: 0.7, ease: "back.out(2.2)" },
+            0.55,
+          )
           .from(".visit-row", { opacity: 0, x: 18, stagger: 0.06, duration: 0.4, ease: "power2.out" }, "-=0.2");
 
         gsap.to(".live-dot", { scale: 1.9, opacity: 0, duration: 1.2, repeat: -1, ease: "power2.out" });
@@ -61,27 +135,33 @@ export default function Location() {
     { scope: root },
   );
 
-  const mapSrc = `https://www.google.com/maps?q=${encodeURIComponent(INFO.mapsQuery)}&z=16&output=embed`;
   const directions = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(INFO.mapsQuery)}`;
 
   return (
     <section ref={root} id="ubicacion" className="relative overflow-x-clip bg-char text-char">
       <h2 className="sr-only">Ubicación y horarios</h2>
       <div className="map-frame relative h-[70svh] overflow-hidden md:h-[100svh] md:min-h-[720px]">
-        <iframe
-          title={`Mapa de ${INFO.name} en ${INFO.street}, ${INFO.area}`}
-          src={mapSrc}
-          loading="lazy"
-          referrerPolicy="no-referrer-when-downgrade"
-          className="map-iframe absolute inset-0 size-full border-0"
-          allowFullScreen
+        <div
+          ref={mapEl}
+          role="region"
+          aria-label={`Mapa de ${INFO.name} en ${INFO.street}, ${INFO.area}`}
+          className="map-canvas absolute inset-0 isolate z-0 bg-[#f2f1ee]"
         />
-        <div className="pointer-events-none absolute inset-0 bg-ketchup mix-blend-multiply opacity-25" aria-hidden="true" />
+        {mapFailed && (
+          <a
+            href={directions}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="absolute inset-0 grid place-items-center bg-[#f2f1ee] p-8 text-center font-display text-3xl uppercase text-char"
+          >
+            Ver la ubicación en Google Maps
+          </a>
+        )}
         <div className="map-door map-door-l pointer-events-none absolute hidden inset-y-0 left-0 w-1/2 bg-mustard" aria-hidden="true" />
         <div className="map-door map-door-r pointer-events-none absolute hidden inset-y-0 right-0 w-1/2 bg-mustard" aria-hidden="true" />
       </div>
 
-      <div className="relative z-10 -mt-20 px-4 pb-16 md:absolute md:left-[var(--gutter)] md:top-[60px] md:mt-0 md:w-[400px] md:px-0 md:pb-0">
+      <div className="relative z-10 -mt-20 px-4 pb-28 md:absolute md:left-[var(--gutter)] md:top-[60px] md:mt-0 md:w-[400px] md:px-0 md:pb-0">
         <div className="visit-card bg-paper p-7 md:p-8">
           <p className="font-display text-[2.6rem] uppercase leading-[0.9]">Ven con hambre</p>
 
