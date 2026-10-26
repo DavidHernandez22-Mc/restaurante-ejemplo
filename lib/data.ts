@@ -305,8 +305,8 @@ export const INFO = {
   name: "La Plancha 70",
   street: "Cra. 70 #44-21",
   area: "Laureles, Medellín",
-  // Reemplazar TU_NUMERO por el número de WhatsApp con indicativo, sin "+" ni espacios (ej. 573001112233).
-  whatsapp: "TU_NUMERO",
+  // Número de WhatsApp con indicativo, sin "+" ni espacios.
+  whatsapp: "573008564773",
   mapsQuery: "Carrera 70 #44-21, Laureles, Medellín, Antioquia",
   since: 2016,
 };
