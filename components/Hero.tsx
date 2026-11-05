@@ -8,20 +8,43 @@ import { INFO } from "@/lib/data";
 import { BurgerArt, Ingredient, RingSticker, type IngredientKind } from "./Burger";
 import Magnetic from "./Magnetic";
 
-type Floating = { kind: IngredientKind; style: React.CSSProperties; depth: number; rot: number; mobile?: boolean };
+type Floating = { kind: IngredientKind; style: React.CSSProperties; depth: number; rot: number };
 
-const FLOATING: Floating[] = [
-  { kind: "pickle", style: { left: "47%", top: "9%", width: "clamp(44px,5vw,72px)" }, depth: 0.8, rot: -14, mobile: true },
-  { kind: "tomato", style: { right: "3%", top: "66%", width: "clamp(60px,6.5vw,96px)" }, depth: 0.5, rot: 10, mobile: true },
-  { kind: "fry", style: { left: "37%", top: "56%", width: "clamp(16px,1.8vw,26px)" }, depth: 1.1, rot: 28 },
-  { kind: "onion", style: { right: "41%", top: "74%", width: "clamp(48px,5vw,74px)" }, depth: 0.7, rot: 0 },
-  { kind: "fry", style: { right: "6%", top: "7%", width: "clamp(14px,1.6vw,22px)" }, depth: 1.3, rot: -32, mobile: true },
-  { kind: "cheese", style: { left: "27%", top: "3%", width: "clamp(40px,4.4vw,62px)" }, depth: 0.4, rot: 16 },
-  { kind: "sesame", style: { left: "61%", top: "5%", width: "18px" }, depth: 1.4, rot: 30, mobile: true },
-  { kind: "sesame", style: { right: "2%", top: "42%", width: "16px" }, depth: 0.9, rot: -20 },
-  { kind: "sesame", style: { left: "42%", top: "45%", width: "14px" }, depth: 1.2, rot: 60 },
-  { kind: "sesame", style: { left: "6%", top: "47%", width: "16px" }, depth: 0.6, rot: -40, mobile: true },
+// Computador: solo en zonas libres (a la derecha de "MUERDE", entre la foto y la hamburguesa,
+// y debajo de la hamburguesa), nunca sobre el titular ni el texto.
+const FLOATING_DESKTOP: Floating[] = [
+  { kind: "pickle", style: { left: "46%", top: "17%", width: "clamp(44px,4.6vw,68px)" }, depth: 0.6, rot: -14 },
+  { kind: "sesame", style: { left: "53%", top: "24%", width: "16px" }, depth: 1.4, rot: 30 },
+  { kind: "fry", style: { left: "55%", top: "57%", width: "clamp(14px,1.5vw,22px)" }, depth: 0.25, rot: 18 },
+  { kind: "cheese", style: { left: "57.5%", top: "75%", width: "clamp(36px,3.8vw,56px)" }, depth: 0.25, rot: 16 },
+  { kind: "onion", style: { right: "30%", top: "79%", width: "clamp(44px,4.4vw,66px)" }, depth: 0.7, rot: 0 },
+  { kind: "tomato", style: { right: "4%", top: "76%", width: "clamp(52px,5.4vw,80px)" }, depth: 0.5, rot: 10 },
+  { kind: "fry", style: { right: "24%", top: "8%", width: "clamp(12px,1.3vw,18px)" }, depth: 1.3, rot: -60 },
+  { kind: "sesame", style: { right: "16%", top: "80%", width: "14px" }, depth: 1.2, rot: 60 },
 ];
+
+// Celular y tablet: en una franja propia entre el titular y la hamburguesa.
+const FLOATING_MOBILE: Floating[] = [
+  { kind: "pickle", style: { left: "6%", top: "8%", width: "48px" }, depth: 0.8, rot: -14 },
+  { kind: "sesame", style: { left: "30%", top: "40%", width: "15px" }, depth: 1.4, rot: 30 },
+  { kind: "cheese", style: { left: "44%", top: "4%", width: "40px" }, depth: 0.5, rot: 12 },
+  { kind: "sesame", style: { left: "66%", top: "52%", width: "13px" }, depth: 1.1, rot: -30 },
+  { kind: "tomato", style: { right: "6%", top: "0%", width: "52px" }, depth: 0.6, rot: 10 },
+];
+
+function FloatingSet({ items }: { items: Floating[] }) {
+  return (
+    <>
+      {items.map((f, i) => (
+        <div key={i} className="ing absolute" data-depth={f.depth} data-kind={f.kind} style={f.style}>
+          <div className="ing-inner" style={{ transform: `rotate(${f.rot}deg)` }}>
+            <Ingredient kind={f.kind} className="ing-float block h-auto w-full" />
+          </div>
+        </div>
+      ))}
+    </>
+  );
+}
 
 const TABS = [
   { href: "#menu", label: "La carta", cls: "bg-mustard text-char", h: "h-[64px] lg:h-[70px]" },
@@ -100,11 +123,16 @@ export default function Hero() {
         });
         gsap.utils.toArray<HTMLElement>(".ing").forEach((node) => {
           const depth = Number(node.dataset.depth ?? 1);
-          gsap.to(node, { y: -depth * 380, ease: "none", scrollTrigger: scrub });
+          // Recorrido corto para que ningún ingrediente cruce el titular al hacer scroll:
+          // en computador suben un poco; en la franja de celular bajan hacia la hamburguesa.
+          const desktop = node.parentElement?.classList.contains("lg:block");
+          gsap.to(node, { y: desktop ? -depth * 90 : depth * 40, ease: "none", scrollTrigger: scrub });
         });
-        gsap.to(".hero-photo-wrap", { y: -160, ease: "none", scrollTrigger: scrub });
+        // La foto baja un poco en vez de subir, para no cruzar "SIN MIEDO".
+        gsap.to(".hero-photo-wrap", { y: 40, ease: "none", scrollTrigger: scrub });
         gsap.to(".hero-line-1", { xPercent: -8, ease: "none", scrollTrigger: scrub });
-        gsap.to(".hero-line-2", { xPercent: 6, ease: "none", scrollTrigger: scrub });
+        // Las dos líneas se alejan hacia la izquierda, nunca hacia la hamburguesa.
+        gsap.to(".hero-line-2", { xPercent: -4, ease: "none", scrollTrigger: scrub });
 
         return () => {
           off();
@@ -147,15 +175,9 @@ export default function Hero() {
       id="inicio"
       className="hero relative isolate flex min-h-[calc(100svh-var(--demo-h))] flex-col overflow-hidden bg-ketchup text-paper lg:block lg:h-[calc(100svh-var(--demo-h))] lg:min-h-[720px]"
     >
-      {/* Ingredientes flotantes */}
-      <div className="pointer-events-none absolute inset-0 z-10" aria-hidden="true">
-        {FLOATING.map((f, i) => (
-          <div key={i} className={`ing absolute ${f.mobile ? "" : "hidden md:block"}`} data-depth={f.depth} style={f.style}>
-            <div className="ing-inner" style={{ transform: `rotate(${f.rot}deg)` }}>
-              <Ingredient kind={f.kind} className="ing-float block h-auto w-full" />
-            </div>
-          </div>
-        ))}
+      {/* Ingredientes flotantes (computador) */}
+      <div className="pointer-events-none absolute inset-0 z-10 hidden lg:block" aria-hidden="true">
+        <FloatingSet items={FLOATING_DESKTOP} />
       </div>
 
       {/* Barra superior */}
@@ -165,9 +187,9 @@ export default function Hero() {
           <li><a className="link-underline" href="#combos" data-cursor="button">Combos</a></li>
           <li><a className="link-underline" href="#ubicacion" data-cursor="button">Dónde estamos</a></li>
         </ul>
-        <a href="#inicio" className="col-start-2 text-center font-display uppercase leading-[0.85]" aria-label="La Plancha 70, inicio">
-          <span className="block text-[0.95rem] tracking-[0.02em]">La Plancha</span>
-          <span className="block text-[1.9rem] lg:text-[2.2rem]">70</span>
+        <a href="#inicio" className="col-start-2 flex flex-col items-center gap-1 text-center font-display uppercase leading-none" aria-label="La Plancha 70, inicio">
+          <span className="block text-[0.95rem] tracking-[0.04em]">La Plancha</span>
+          <span className="block text-[1.75rem] lg:text-[2rem]">70</span>
         </a>
         <a href="#ubicacion" className="link-underline justify-self-end text-[0.95rem] font-medium" data-cursor="button">
           <span className="hidden sm:inline">{INFO.street} · </span>Laureles
@@ -175,22 +197,27 @@ export default function Hero() {
       </nav>
 
       {/* Titular */}
-      <h1 className="hero-title relative z-30 mt-6 px-[var(--gutter)] font-display uppercase leading-[0.9] tracking-[-0.02em] text-[clamp(5.2rem,21vw,9rem)] lg:absolute lg:leading-[0.8] lg:left-0 lg:top-[13svh] lg:mt-0 lg:text-[clamp(7rem,16.5vw,17.5rem)]">
+      <h1 className="hero-title relative z-30 mt-6 px-[var(--gutter)] font-display uppercase leading-[0.9] tracking-[-0.02em] text-[clamp(5.2rem,21vw,9rem)] lg:absolute lg:leading-[0.8] lg:left-0 lg:top-[13svh] lg:mt-0 lg:text-[clamp(6rem,13.5vw,15rem)]">
         <span className="sr-only">La Plancha 70, hamburguesas en Medellín: </span>
         <span className="hero-line hero-line-1 block">Muerde</span>
         <span className="hero-line hero-line-2 block pl-[8vw]">sin miedo</span>
       </h1>
 
+      {/* Ingredientes flotantes (celular y tablet): franja propia entre el titular y la hamburguesa */}
+      <div className="pointer-events-none relative z-10 mx-auto mt-6 h-16 w-full max-w-[560px] lg:hidden" aria-hidden="true">
+        <FloatingSet items={FLOATING_MOBILE} />
+      </div>
+
       {/* Hamburguesa estrella */}
-      <div className="hero-burger relative z-20 mx-auto mt-4 w-[min(88vw,520px)] lg:absolute lg:right-[2.5vw] lg:top-[13svh] lg:mt-0 lg:w-[min(44vw,80svh)]">
+      <div className="hero-burger relative z-20 mx-auto mt-2 w-[min(88vw,520px)] lg:absolute lg:right-[2.5vw] lg:top-[13svh] lg:mt-0 lg:w-[min(38vw,70svh)]">
         <BurgerArt className="block h-auto w-full overflow-visible" />
-        <div className="hero-sticker absolute -right-1 -top-6 w-[112px] -rotate-12 text-[14px] sm:w-[140px] lg:-right-6 lg:-top-2 lg:w-[168px] lg:text-[18px]">
+        <div className="hero-sticker absolute right-0 top-0 w-[108px] -rotate-12 text-[13px] sm:w-[136px] sm:text-[17px] lg:-right-6 lg:-top-2 lg:w-[150px] lg:text-[16px]">
           <RingSticker ring="LA ESTRELLA DE LA CASA · LA ESTRELLA DE LA CASA · " top="La Doble" bottom="$28.900" ringClassName="ring-spin" />
         </div>
       </div>
 
       {/* Foto real, pegada con cinta */}
-      <div className="hero-photo-wrap absolute bottom-[132px] left-[40vw] z-10 hidden w-[clamp(150px,13vw,200px)] lg:block">
+      <div className="hero-photo-wrap absolute bottom-[132px] left-[40vw] z-10 hidden w-[clamp(150px,13vw,200px)] xl:block">
         <figure className="hero-photo relative -rotate-[7deg] bg-paper p-2 pb-8 text-char">
           <span className="tape absolute -top-3 left-1/2 h-6 w-20 -translate-x-1/2 rotate-3 bg-mustard/90" aria-hidden="true" />
           <Image
