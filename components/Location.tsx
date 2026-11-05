@@ -76,7 +76,10 @@ export default function Location() {
         scrollWheelZoom: false,
         dragging: !touch,
         zoomControl: true,
+        // Los créditos van abajo a la izquierda: la esquina derecha es del botón flotante de WhatsApp.
+        attributionControl: false,
       });
+      L.control.attribution({ position: "bottomleft", prefix: '<a href="https://leafletjs.com">Leaflet</a>' }).addTo(map);
       L.tileLayer(TILES_BASE, { maxZoom: 16, attribution: ATTRIBUTION }).addTo(map);
       L.tileLayer(TILES_LABELS, { maxZoom: 16 }).addTo(map);
       const icon = L.divIcon({ className: "plancha-pin", html: PIN_HTML, iconSize: [60, 60], iconAnchor: [30, 30], popupAnchor: [0, -32] });

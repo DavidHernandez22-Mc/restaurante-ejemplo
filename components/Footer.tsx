@@ -102,7 +102,8 @@ export default function Footer() {
         </div>
       </div>
 
-      <div className="foot-word-wrap mt-16 overflow-hidden lg:mt-24" aria-hidden="true">
+      {/* El espacio inferior deja la palabra por encima del botón flotante de WhatsApp al final de la página. */}
+      <div className="foot-word-wrap mt-16 overflow-hidden sm:mb-[104px] lg:mt-24" aria-hidden="true">
         <p className="foot-word whitespace-nowrap text-center font-display uppercase leading-[0.78] tracking-[-0.03em] text-mustard text-[19vw]">
           Plancha 70
         </p>

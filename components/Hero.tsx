@@ -234,7 +234,7 @@ export default function Hero() {
       </div>
 
       {/* Texto y acción */}
-      <div className="hero-copy relative z-30 mt-6 flex flex-col gap-6 px-[var(--gutter)] pb-32 lg:absolute lg:bottom-[128px] lg:mt-0 lg:max-w-[34rem] lg:pb-0">
+      <div className="hero-copy relative z-30 mt-6 flex flex-col gap-6 px-[var(--gutter)] pb-32 sm:pr-[104px] lg:absolute lg:bottom-[128px] lg:mt-0 lg:max-w-[34rem] lg:pb-0 lg:pr-[var(--gutter)]">
         <p className="text-[clamp(1.125rem,1rem+0.6vw,1.5rem)] leading-[1.4] font-medium">
           Smash de res molida esta mañana, papas cortadas a mano y malteadas que no pasan por el pitillo. En la 70 desde 2016.
         </p>
@@ -256,14 +256,15 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* Pestañas tipo carpeta que llevan a cada sección */}
-      <nav aria-label="Secciones" className="absolute inset-x-0 bottom-0 z-30 overflow-x-auto overflow-y-hidden px-[var(--gutter)] [scrollbar-width:none]">
-        <ul className="flex min-w-max items-end gap-2 lg:min-w-0 lg:gap-3">
+      {/* Pestañas tipo carpeta que llevan a cada sección. A la derecha queda libre la esquina
+          del botón flotante de WhatsApp (24 px de margen + 64 px de botón + 16 px de aire). */}
+      <nav aria-label="Secciones" className="absolute inset-x-0 bottom-0 z-30 overflow-x-auto overflow-y-hidden px-[var(--gutter)] [scrollbar-width:none] sm:pr-[104px]">
+        <ul className="flex min-w-max items-end gap-2 md:min-w-0 lg:gap-3">
           {TABS.map((t) => (
-            <li key={t.href} className="hero-tab lg:flex-1">
+            <li key={t.href} className="hero-tab md:min-w-0 md:flex-1">
               <a
                 href={t.href}
-                className={`folder-tab flex ${t.h} min-w-[150px] items-start px-7 pt-3 font-display text-xl uppercase lg:text-2xl ${t.cls}`}
+                className={`folder-tab flex ${t.h} min-w-[150px] items-start whitespace-nowrap px-7 pt-3 font-display text-xl uppercase md:min-w-0 md:px-4 md:text-lg lg:px-6 lg:text-2xl ${t.cls}`}
                 data-cursor="button"
               >
                 {t.label}
